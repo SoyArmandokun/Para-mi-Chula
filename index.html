@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para mi Chula</title>
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    color: #ffb6c1;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+}
+
+canvas {
+    display: block;
+}
+
+#content {
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+    text-align: center;
+}
+
+#title {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+#counter {
+    font-size: 18px;
+    margin-bottom: 18px;
+    color: white;
+}
+
+.type {
+    font-size: 26px;
+    color: #ff69b4;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid #ff69b4;
+    width: 0;
+    margin: 10px auto;
+    animation: typing 4s steps(35,end) forwards,
+               blink .7s infinite;
+}
+
+#valentin {
+    animation-delay: 5s;
+}
+
+@keyframes typing {
+    to { width: 380px; }
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div id="content">
+    <div id="title">Mi amor por ti comenzó hace...</div>
+    <div id="counter"></div>
+
+    <div class="type">Te amo mucho mi chula</div>
+    <div class="type" id="valentin">¿Quieres ser mi San Valentín?</div>
+</div>
+
+<script>
+// esto sera para el contador (no perder xd)
+const startDate = new Date("2022-04-24T00:00:00");
+// mis funciones ya listas del año
+function updateCounter() {
+    const now = new Date();
+    let diff = now - startDate;
+
+    let s = Math.floor(diff / 1000);
+    let m = Math.floor(s / 60);
+    let h = Math.floor(m / 60);
+    let d = Math.floor(h / 24);
+
+    let y = Math.floor(d / 365);
+    d %= 365;
+    let mo = Math.floor(d / 30);
+    d %= 30;
+
+    h %= 24;
+    m %= 60;
+    s %= 60;
+
+    document.getElementById("counter").innerHTML =
+        `${y} años, ${mo} meses, ${d} días<br>${h} horas, ${m} minutos y ${s} segundos`;
+}
+setInterval(updateCounter, 1000);
+updateCounter();
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let hearts = [];
+
+function heart(x, y, size, speed) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.speed = speed;
+}
+
+function drawHeart(h) {
+    ctx.fillStyle = "rgba(255,105,180,0.8)";
+    ctx.beginPath();
+    ctx.moveTo(h.x, h.y);
+    ctx.bezierCurveTo(h.x - h.size, h.y - h.size,
+                      h.x - h.size * 2, h.y + h.size / 3,
+                      h.x, h.y + h.size * 2);
+    ctx.bezierCurveTo(h.x + h.size * 2, h.y + h.size / 3,
+                      h.x + h.size, h.y - h.size,
+                      h.x, h.y);
+    ctx.fill();
+}
+
+function createHearts() {
+    hearts = [];
+    for (let i = 0; i < 350; i++) {
+        hearts.push(new heart(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height,
+            Math.random() * 4 + 2,
+            Math.random() * 0.6 + 0.2
+        ));
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    hearts.forEach(h => {
+        h.y -= h.speed;
+        if (h.y < 0) h.y = canvas.height;
+        drawHeart(h);
+    });
+    requestAnimationFrame(animate);
+}
+
+createHearts();
+animate();
+
+window.onresize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    createHearts();
+};
+</script>
+
+</body>
+</html>

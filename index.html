@@ -41,9 +41,9 @@ canvas {
     white-space: nowrap;
     overflow: hidden;
     border-right: 3px solid #ff69b4;
-    width: 0;
+    width: 100%;
     margin: 10px auto;
-    animation: typing 4s steps(35,end) forwards,
+    animation: typing 4s steps(40,end) forwards,
                blink .7s infinite;
 }
 
@@ -52,7 +52,8 @@ canvas {
 }
 
 @keyframes typing {
-    to { width: 380px; }
+    from { width: 0; }
+    to { width: 100%; }
 }
 
 @keyframes blink {
@@ -73,32 +74,52 @@ canvas {
 </div>
 
 <script>
-// esto sera para el contador (no perder xd)
-const startDate = new Date("2022-04-26T00:00:00");
-// mis funciones ya listas del año
+// ===== contador ya funcionando, esta debe ser la buena =====
+const startDate = new Date(2022, 3, 26, 0, 0, 0); // 26 abril 2022
+// funciones corregidas!!!
 function updateCounter() {
     const now = new Date();
-    let diff = now - startDate;
 
-    let s = Math.floor(diff / 1000);
-    let m = Math.floor(s / 60);
-    let h = Math.floor(m / 60);
-    let d = Math.floor(h / 24);
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
 
-    let y = Math.floor(d / 365);
-    d %= 365;
-    let mo = Math.floor(d / 30);
-    d %= 30;
+    if (days < 0) {
+        months--;
+        const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += lastMonth.getDate();
+    }
 
-    h %= 24;
-    m %= 60;
-    s %= 60;
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    let hours = now.getHours() - startDate.getHours();
+    let minutes = now.getMinutes() - startDate.getMinutes();
+    let seconds = now.getSeconds() - startDate.getSeconds();
+
+    if (seconds < 0) {
+        seconds += 60;
+        minutes--;
+    }
+    if (minutes < 0) {
+        minutes += 60;
+        hours--;
+    }
+    if (hours < 0) {
+        hours += 24;
+        days--;
+    }
 
     document.getElementById("counter").innerHTML =
-        `${y} años, ${mo} meses, ${d} días<br>${h} horas, ${m} minutos y ${s} segundos`;
+        `${years} años, ${months} meses, ${days} días<br>
+         ${hours} horas, ${minutes} minutos y ${seconds} segundos`;
 }
+
 setInterval(updateCounter, 1000);
 updateCounter();
+
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");

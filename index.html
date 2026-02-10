@@ -43,23 +43,37 @@ canvas {
     border-right: 3px solid #ff69b4;
     width: 0;
     margin: 10px auto;
-    animation: typing 4s steps(32, end) forwards,
-               blink .7s infinite;
 }
 
-@keyframes typing {
+/* PRIMER MENSAJE */
+#love {
+    animation:
+        typing1 3.5s steps(22, end) forwards,
+        blink .7s infinite;
+}
+
+/* SEGUNDO MENSAJE */
+#valentin {
+    animation:
+        typing2 4.5s steps(32, end) forwards,
+        blink .7s infinite;
+    animation-delay: 3.8s;
+}
+
+@keyframes typing1 {
     from { width: 0; }
-    to { width: 540px; }
+    to { width: 420px; }
+}
+
+@keyframes typing2 {
+    from { width: 0; }
+    to { width: 600px; }
 }
 
 @keyframes blink {
     50% { border-color: transparent; }
 }
 
-
-@keyframes blink {
-    50% { border-color: transparent; }
-}
 </style>
 </head>
 <body>
@@ -70,7 +84,7 @@ canvas {
     <div id="title">Mi amor por ti comenzó hace...</div>
     <div id="counter"></div>
 
-    <div class="type">Te amo mucho mi chula</div>
+    <div class="type" id="love">Te amo mucho mi chula</div>
     <div class="type" id="valentin">¿Quieres ser mi San Valentin?</div>
 </div>
 

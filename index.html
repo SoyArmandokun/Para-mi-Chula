@@ -41,20 +41,21 @@ canvas {
     white-space: nowrap;
     overflow: hidden;
     border-right: 3px solid #ff69b4;
-    width: 100%;
+    width: 0;
     margin: 10px auto;
-    animation: typing 4s steps(40,end) forwards,
+    animation: typing 4s steps(32, end) forwards,
                blink .7s infinite;
-}
-
-#valentin {
-    animation-delay: 5s;
 }
 
 @keyframes typing {
     from { width: 0; }
-    to { width: 100%; }
+    to { width: 540px; }
 }
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
 
 @keyframes blink {
     50% { border-color: transparent; }
